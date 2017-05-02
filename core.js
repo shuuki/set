@@ -21,29 +21,34 @@ body.appendChild(div);
 body.appendChild(pre);
 
 
+
+
+
 // steps
 
 function init() {
 	time = Date.now();
 	if (!running) {
-		window.requestAnimationFrame(update);
+		window.requestAnimationFrame(update)    
 		running = true;
 		button.innerHTML = "Pause";
 	} else {
-		window.cancelAnimationFrame(update);
+		window.cancelAnimationFrame(update)
 		running = false;
 		button.innerHTML = "Resume";
 	}
 }
 
 function update() {
-	tick();
-	render();
-	if (running) window.requestAnimationFrame(update);
+  if (running)
+    window.requestAnimationFrame(update)
+	tick()
+	render()
 }
 
 function tick() {
-	var del = 0, past = time;
+	var del = 0,
+    past = time;
 
 	time = Date.now();
 	del = time - past;
@@ -52,12 +57,13 @@ function tick() {
 
 function render() {
 	var seconds = Math.floor(up / 1000),
-    cos1 = Math.cos(up / 1400).toFixed(2),
-    cos2 = Math.cos(up / 350).toFixed(2),
-    cos3 = Math.cos(up / 5600).toFixed(2);
+    beat1 = ((Math.sin(up / 1000)+1)/2).toFixed(2),
+    beat2 = ((Math.sin(up / 250)+1)/2).toFixed(2),
+    beat3 = ((Math.sin(up / 4000)+1)/2).toFixed(2);
     
 
-	div.innerHTML = p(running) + " " + p(seconds) + p(cos1) + p(cos2) + p(cos3);
+	div.innerHTML = p(running) + " " + p(seconds) + p(beat1) + p(beat2) + p(beat3);
+  pre.innerHTML = linegen(beat1,beat2,beat3);
 }
 
 function p(content) {
@@ -73,6 +79,25 @@ init();
 
 
 
+function linegen(bar1,bar2,bar3) {
+  
+  var px1 = Math.floor(bar1*40),
+    px2 = Math.floor(bar2*40),
+    px3 = Math.floor(bar3*40);
+  
+  var foo = []
+  for (var x = 0; x < 41; x++) {
+    if (px1 === x || px2 === x || px3 === x)
+      foo.push('*')
+    else
+      foo.push(' ')
+  }
+  //for (var y = 0; y < 25; y++){for (var x = 0; x < 40; x++){foo.push('*')}foo.push('\n')}
+  return foo.join('')
+}
+
+
+
 
 
 
@@ -82,6 +107,7 @@ init();
 // scenes ---------------------
 
 var scene = {}
+
 
 scene.active = 0
 

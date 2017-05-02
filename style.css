@@ -4,6 +4,14 @@ body {
 }
 
 
+pre {
+  font-size: 16px;
+  line-height: 16px;
+
+  font-family: monospace;
+  -webkit-font-smoothing: none;
+}
+
 /*
 @dead-channel: #231f20;
 @sea: #37b0bb;
