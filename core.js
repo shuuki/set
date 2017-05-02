@@ -67,3 +67,46 @@ function p(content) {
 //function roll() {}
 
 init();
+
+
+
+
+
+
+
+
+
+
+
+
+// scenes ---------------------
+
+var scene = {}
+
+scene.active = 0
+
+scene.update = {}
+
+scene.draw = {}
+
+scene.updates = () => {
+	if (typeof scene.update[scene.active] === "function" )
+    scene.update[scene.active]()
+}
+
+scene.drawing = () => {
+	if (typeof scene.draw[scene.active] === "function" )
+    scene.draw[scene.active]()
+}
+
+scene.reset = () => {
+  if (scene.active != 0)
+	 scene.active = 0
+}
+
+scene.cycle = () => {
+	if (scene.active < scene.draw.length)
+    scene.active += 1
+	 else
+    scene.active = 0
+}
