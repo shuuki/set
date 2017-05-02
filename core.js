@@ -63,7 +63,7 @@ function render() {
     
 
 	div.innerHTML = p(running) + " " + p(seconds) + p(beat1) + p(beat2) + p(beat3);
-  pre.innerHTML = linegen(beat1,beat2,beat3);
+  pre.innerHTML += linegen(beat1,beat2,beat3);
 }
 
 function p(content) {
@@ -91,6 +91,8 @@ function linegen(bar1,bar2,bar3) {
       foo.push('*')
     else
       foo.push(' ')
+		if (x === 40)
+			foo.push('\n')
   }
   //for (var y = 0; y < 25; y++){for (var x = 0; x < 40; x++){foo.push('*')}foo.push('\n')}
   return foo.join('')
