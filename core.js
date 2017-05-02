@@ -27,7 +27,9 @@ body.appendChild(pre);
 // steps
 
 function init() {
+	
 	time = Date.now();
+	
 	if (!running) {
 		window.requestAnimationFrame(update)    
 		running = true;
@@ -37,6 +39,8 @@ function init() {
 		running = false;
 		button.innerHTML = "Resume";
 	}
+	
+	
 }
 
 function update() {
@@ -55,15 +59,40 @@ function tick() {
 	up = up + del;
 }
 
-function render() {
-	var seconds = Math.floor(up / 1000),
-    beat1 = ((Math.sin(up / 1000)+1)/2).toFixed(2),
-    beat2 = ((Math.sin(up / 250)+1)/2).toFixed(2),
-    beat3 = ((Math.sin(up / 4000)+1)/2).toFixed(2);
-    
 
-	div.innerHTML = p('Running: '+running) + " " + p('Luminosity: '+luminosity)+ p('Seconds: '+seconds) + p(beat1) + p(beat2) + p(beat3);
+function clocks(time) {
+	var clock = {};
+		clock.ms = Math.floor(time % 1000);
+		clock.sec = Math.floor((time/1000)%60);
+		clock.min = Math.floor((time/(1000*60))%60);
+		clock.hr = Math.floor((time/(1000*60*60))%24);
+		clock.up = Math.floor(up/1000);
+	return clock;
+}
+
+function render() {
+
+	var c = clocks(up);
+
+	var beat1 = ((Math.sin(up / 500)+1)/2).toFixed(3),
+    beat2 = ((Math.sin(up / 125)+1)/2).toFixed(3),
+    beat3 = ((Math.sin(up / 2000)+1)/2).toFixed(3);
+
+
+	div.innerHTML = 
+		p('Running: '+running) 
+		+ " " 
+		//+ p('Luminosity: '+luminosity)
+		+ p('Uptime: ' + up)
+		+ p(c.hr + ' hr : ' + c.min + ' min : ' + c.sec + ' sec')
+		+ p(beat1) 
+		+ p(beat2) 
+		+ p(beat3);
+		
+		// 28 days beat: 28*24*60*60*1000
+
   pre.innerHTML = linegen(beat1,beat2,beat3);
+
 }
 
 function p(content) {
@@ -75,28 +104,6 @@ function p(content) {
 init();
 
 
-
-/*
-
-var s = new AmbientLightSensor();
-s.start();
-s.onchange = event => alert(event.reading.illuminance); 
-s.stop();
-
-*/
-
-window.addEventListener("devicelight", function (event) {
-	luminosity = event.value;
-	console.log(luminosity)
-	
-	//event.value is the lux value returned by the sensor on the device
-	if (event.value < 100) {
-		document.body.style.backgroundColor="#888";
-	} else {
-		document.body.style.backgroundColor="#fff";
-	}
-
-});
 
 
 
@@ -124,6 +131,33 @@ function linegen(bar1,bar2,bar3) {
 
 
 
+// changes mode ambient light sensor
+// only works on firefox
+
+/*
+
+var s = new AmbientLightSensor();
+s.start();
+s.onchange = event => alert(event.reading.illuminance); 
+s.stop();
+
+*/
+
+window.addEventListener("devicelight", function (event) {
+	luminosity = event.value;
+	console.log(luminosity)
+	//event.value is the lux value returned by the sensor on the device
+	if (event.value < 100) {
+		document.body.style.backgroundColor="#777";
+		document.body.style.color="#fff";
+	} else {
+		document.body.style.backgroundColor="#fff";
+	}
+
+});
+
+
+
 
 
 
@@ -140,23 +174,18 @@ scene.update = {}
 scene.draw = {}
 
 scene.updates = () => {
-	if (typeof scene.update[scene.active] === "function" )
-    scene.update[scene.active]()
+	if (typeof scene.update[scene.active] === "function" ) scene.update[scene.active]()
 }
 
 scene.drawing = () => {
-	if (typeof scene.draw[scene.active] === "function" )
-    scene.draw[scene.active]()
+	if (typeof scene.draw[scene.active] === "function" ) scene.draw[scene.active]()
 }
 
 scene.reset = () => {
-  if (scene.active != 0)
-	 scene.active = 0
+  if (scene.active != 0) scene.active = 0
 }
 
 scene.cycle = () => {
-	if (scene.active < scene.draw.length)
-    scene.active += 1
-	 else
-    scene.active = 0
+	if (scene.active < scene.draw.length) scene.active += 1
+	else scene.active = 0
 }
