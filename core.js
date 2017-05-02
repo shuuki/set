@@ -63,7 +63,7 @@ function render() {
     
 
 	div.innerHTML = p('Running: '+running) + " " + p('Luminosity: '+luminosity)+ p('Seconds: '+seconds) + p(beat1) + p(beat2) + p(beat3);
-  pre.innerHTML += linegen(beat1,beat2,beat3);
+  pre.innerHTML = linegen(beat1,beat2,beat3);
 }
 
 function p(content) {
@@ -76,11 +76,17 @@ init();
 
 
 
-
+/*
 window.addEventListener("devicelight", function (event) {
 	luminosity = event.value;
+	console.log(luminosity)
 });
+*/
 
+var s = new AmbientLightSensor();
+s.start();
+s.onchange = event => alert(event.reading.illuminance); 
+s.stop();
 
 
 
