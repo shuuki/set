@@ -107,6 +107,9 @@ window.addEventListener('devicelight', function(event) {
 
 var bodyBg= document.body.style;
 
+alert(event.value)
+div.innerHTML += 'light: '+event.value;
+
 //event.value is the lux value returned by the sensor on the device
 if (event.value < 100) {
 
