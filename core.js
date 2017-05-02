@@ -103,6 +103,27 @@ function linegen(bar1,bar2,bar3) {
 
 
 
+window.addEventListener('devicelight', function(event) {
+
+var bodyBg= document.body.style;
+
+//event.value is the lux value returned by the sensor on the device
+if (event.value < 100) {
+
+alert('Hey, you! You are working in a dark environment');
+
+bodyBg.backgroundColor="lightgrey";
+
+} else {
+
+bodyBg.backgroundColor="#fff";
+
+}
+
+});
+
+
+
 
 
 
