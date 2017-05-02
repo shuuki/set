@@ -1,8 +1,8 @@
 {
   "short_name": "Set",
   "name": "Set Running",
-  "background_color": "#000000",
-  "theme_color": "#000000",
+  "background_color": "#282634",
+  "theme_color": "#4a475d",
   "display": "standalone",
   "start_url": "index.html?launcher=true",
   "icons": [
