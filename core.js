@@ -1,4 +1,5 @@
 console.log('ready')
+location.reload(true)
 
 // globals
 
