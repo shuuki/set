@@ -2,7 +2,7 @@
   "short_name": "Set",
   "name": "Set Running",
   "background_color": "#676097",
-  "theme_color": "#4a475d",
+  "theme_color": "#282634",
   "display": "standalone",
   "start_url": "index.html?launcher=true",
   "icons": [

@@ -1,11 +1,13 @@
 body {
   /*
-  background-color: black;
-  color: white;
+  background-color: #282634 ;
+  color: #fff;
   */
+
   line-height: 1;
   margin: 0;
   font-family: sans-serif;
+
   transition: background-color 2.5s, color 2.5s;
 }
 
@@ -15,11 +17,10 @@ p {
 }
 
 pre {
-  font-size: 16px;
-  line-height: 1;
+  font-size: 8px;
+  line-height: 6px;
 
   font-family: monospace;
-  -webkit-font-smoothing: none;
 }
 
 /*
@@ -30,5 +31,6 @@ pre {
 @dead-violet: #282634;
 @mid-violet: #4a475d;
 @high-violet: #676097;
+higher still #bab2f0
 @sodium-vapor: #e57d00;
 */

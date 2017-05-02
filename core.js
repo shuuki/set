@@ -73,23 +73,24 @@ function tick() {
 
 
 function clocks(time) {
-	var clock = {};
-		clock.ms = Math.floor(time % 1000);
-		clock.sec = Math.floor((time/1000)%60);
-		clock.min = Math.floor((time/(1000*60))%60);
-		clock.hr = Math.floor((time/(1000*60*60))%24);
-		clock.up = Math.floor(up/1000);
-	return clock;
+	var clock = {}
+	clock.ms = Math.floor(time % 1000)
+	clock.sec = Math.floor((time/1000)%60)
+	clock.min = Math.floor((time/(1000*60))%60)
+	clock.hr = Math.floor((time/(1000*60*60))%24)
+	clock.up = Math.floor(up/1000)
+	return clock
 }
 
 
 function beats(time) {
-	var beat = [];
-	
-		beat[0] = ((Math.sin(time / 500)+1)/2).toFixed(3),
-		beat[1] = ((Math.sin(time / 125)+1)/2).toFixed(3),
-		beat[2] = ((Math.sin(time / 2000)+1)/2).toFixed(3);
-		return beat;
+	var beat = []
+	beat[0] = ((Math.sin(time / 500)+1)/2).toFixed(3)
+	beat[1] = ((Math.sin(time / 125)+1)/2).toFixed(3)
+	beat[2] = ((Math.sin(time / 2000)+1)/2).toFixed(3)
+	beat[3] = ((Math.sin(time / (24*60*60*1000))+1)/2).toFixed(3)
+	// more http://www.sengpielaudio.com/calculator-bpmtempotime.htm
+	return beat
 }
 
 
@@ -104,14 +105,11 @@ function render() {
 		+ ' ' 
 		//+ p('Luminosity: '+luminosity)
 		+ p('Uptime: ' + up)
-		+ p(c.hr + ' hr : ' + c.min + ' min : ' + c.sec + ' sec')
-		+ p(b[0]) 
-		+ p(b[1]) 
-		+ p(b[2]);
-		
-		// 28 days beat: 28*24*60*60*1000
+		+ p(c.hr + ' hr : ' + c.min + ' min : ' + c.sec + ' sec');
 
-  pre.innerHTML = linegen(b[0], b[1], b[2]);
+  pre.innerHTML = display(b) ;
+	//p(b.join(', '))
+	
 
 }
 
@@ -120,10 +118,56 @@ function p(content) {
 }
 
 
+
+
+
+//function roll() {}
+
+init();
+
+
+var screen = [];
+
+
+function display(n) {
+	
+	
+	screen.push (linegen(n))
+	
+	if (screen.length > 50) screen = screen.splice(1,50)
+	
+	return screen
+}
+
+
+function linegen(bar) {
+  
+	
+	var px = [];
+	
+	bar.forEach(function(n) { px[Math.floor(n*40)] = true })
+	  
+  var foo = []
+  for (var x = 0; x < 41; x++) {
+    if (px[x])
+      foo.push('#')//█
+    else
+      foo.push(' ')
+		if (x === 40)
+			foo.push('\n')
+  }
+  //for (var y = 0; y < 25; y++){for (var x = 0; x < 40; x++){foo.push('*')}foo.push('\n')}
+  return foo.join('')
+}
+
+
+
+
+
+// save+load using localStorage
+
 function save() {
-	cache = { 
-		time: up
-	};
+	cache = { time: up };
 	window.localStorage.setItem('SETPOINT', JSON.stringify(cache));
 }
 
@@ -140,41 +184,6 @@ function reset() {
 		up = 0
 	}
 }
-
-
-//function roll() {}
-
-init();
-
-
-
-
-
-
-
-
-
-
-function linegen(bar1,bar2,bar3) {
-  
-  var px1 = Math.floor(bar1*40),
-    px2 = Math.floor(bar2*40),
-    px3 = Math.floor(bar3*40);
-  
-  var foo = []
-  for (var x = 0; x < 41; x++) {
-    if (px1 === x || px2 === x || px3 === x)
-      foo.push('*')
-    else
-      foo.push(' ')
-		if (x === 40)
-			foo.push('\n')
-  }
-  //for (var y = 0; y < 25; y++){for (var x = 0; x < 40; x++){foo.push('*')}foo.push('\n')}
-  return foo.join('')
-}
-
-
 
 
 
@@ -196,10 +205,11 @@ window.addEventListener('devicelight', function (event) {
 	console.log(luminosity)
 	//event.value is the lux value returned by the sensor on the device
 	if (event.value < 100) {
-		document.body.style.backgroundColor='#777';
+		document.body.style.backgroundColor='#000';
 		document.body.style.color='#fff';
 	} else {
 		document.body.style.backgroundColor='#fff';
+		document.body.style.color='#000';
 	}
 
 });
