@@ -10,14 +10,16 @@ var body = document.getElementsByTagName("body")[0];
 
 var button = document.createElement("button");
 button.innerHTML = "Begin";
-body.appendChild(button);
 button.addEventListener("click", init);
 
 var div = document.createElement("div");
-body.appendChild(div);
 
 var pre = document.createElement("pre");
+
+body.appendChild(button);
+body.appendChild(div);
 body.appendChild(pre);
+
 
 // steps
 
@@ -49,9 +51,13 @@ function tick() {
 }
 
 function render() {
-	var seconds = Math.floor(up / 1000), cosy = Math.cos(up / 1400).toFixed(2);
+	var seconds = Math.floor(up / 1000),
+    cos1 = Math.cos(up / 1400).toFixed(2),
+    cos2 = Math.cos(up / 350).toFixed(2),
+    cos3 = Math.cos(up / 5600).toFixed(2);
+    
 
-	div.innerHTML = p(running) + " " + p(seconds) + p(cosy);
+	div.innerHTML = p(running) + " " + p(seconds) + p(cos1) + p(cos2) + p(cos3);
 }
 
 function p(content) {
