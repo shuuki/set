@@ -91,9 +91,9 @@ window.addEventListener("devicelight", function (event) {
 	
 	//event.value is the lux value returned by the sensor on the device
 	if (event.value < 100) {
-		bodyBg.backgroundColor="#888";
+		document.body.style.backgroundColor="#888";
 	} else {
-		bodyBg.backgroundColor="#fff";
+		document.body.style.backgroundColor="#fff";
 	}
 
 });
