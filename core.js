@@ -85,10 +85,10 @@ function clocks(time) {
 
 function beats(time) {
 	var beat = []
-	beat[0] = ((Math.sin(time / 500)+1)/2).toFixed(3)
-	beat[1] = ((Math.sin(time / 125)+1)/2).toFixed(3)
-	beat[2] = ((Math.sin(time / 2000)+1)/2).toFixed(3)
-	beat[3] = ((Math.sin(time / (24*60*60*1000))+1)/2).toFixed(3)
+	beat[0] = ((Math.sin(time / 500)+1)/2)
+	beat[1] = ((Math.sin(time / 125)+1)/2)
+	beat[2] = ((Math.sin(time / 2000)+1)/2)
+	beat[3] = ((Math.sin(time / (24*60*60*1000))+1)/2)
 	// more http://www.sengpielaudio.com/calculator-bpmtempotime.htm
 	return beat
 }
@@ -131,11 +131,10 @@ var screen = [];
 
 
 function display(n) {
-	
-	
-	screen.push (linegen(n))
-	
-	if (screen.length > 50) screen = screen.splice(1,50)
+		
+	screen.push(linegen(n))
+
+	if (screen.length > 64) screen = screen.splice(1,64)
 	
 	return screen.join('')
 }
@@ -184,7 +183,6 @@ function reset() {
 		localStorage.removeItem('SETPOINT');
 		up = 0
 	}
-	init()
 }
 
 
