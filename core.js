@@ -2,7 +2,7 @@ console.log('ready')
 
 // globals
 
-var up = 0, time = 0, running = false;
+var up = 0, time = 0, running = false, luminosity;
 
 // elements
 
@@ -62,7 +62,7 @@ function render() {
     beat3 = ((Math.sin(up / 4000)+1)/2).toFixed(2);
     
 
-	div.innerHTML = p(running) + " " + p(seconds) + p(beat1) + p(beat2) + p(beat3);
+	div.innerHTML = p('Running: '+running) + " " + p('Luminosity: '+luminosity)+ p('Seconds: '+seconds) + p(beat1) + p(beat2) + p(beat3);
   pre.innerHTML += linegen(beat1,beat2,beat3);
 }
 
@@ -75,6 +75,11 @@ function p(content) {
 init();
 
 
+
+
+window.addEventListener("devicelight", function (event) {
+	luminosity = event.value;
+});
 
 
 
@@ -101,29 +106,6 @@ function linegen(bar1,bar2,bar3) {
 
 
 
-
-
-window.addEventListener('devicelight', function(event) {
-
-var bodyBg= document.body.style;
-
-alert(event.value)
-div.innerHTML += 'light: '+event.value;
-
-//event.value is the lux value returned by the sensor on the device
-if (event.value < 100) {
-
-alert('Hey, you! You are working in a dark environment');
-
-bodyBg.backgroundColor="lightgrey";
-
-} else {
-
-bodyBg.backgroundColor="#fff";
-
-}
-
-});
 
 
 
