@@ -77,16 +77,18 @@ init();
 
 
 /*
-window.addEventListener("devicelight", function (event) {
-	luminosity = event.value;
-	console.log(luminosity)
-});
-*/
 
 var s = new AmbientLightSensor();
 s.start();
 s.onchange = event => alert(event.reading.illuminance); 
 s.stop();
+
+*/
+
+window.addEventListener("devicelight", function (event) {
+	luminosity = event.value;
+	console.log(luminosity)
+});
 
 
 
