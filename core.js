@@ -101,10 +101,11 @@ function render() {
 
 	
 	div.innerHTML = 
-		p('Running: '+running) 
-		+ ' ' 
+		' '
+		//p('Running: '+running) 
+		//+ ' ' 
 		//+ p('Luminosity: '+luminosity)
-		+ p('Uptime: ' + up)
+		//+ p('Uptime: ' + up)
 		+ p(c.hr + ' hr : ' + c.min + ' min : ' + c.sec + ' sec');
 
   pre.innerHTML = display(b) ;
@@ -136,7 +137,7 @@ function display(n) {
 	
 	if (screen.length > 50) screen = screen.splice(1,50)
 	
-	return screen
+	return screen.join('')
 }
 
 
@@ -150,7 +151,7 @@ function linegen(bar) {
   var foo = []
   for (var x = 0; x < 41; x++) {
     if (px[x])
-      foo.push('#')//█
+      foo.push('█')//
     else
       foo.push(' ')
 		if (x === 40)
@@ -183,6 +184,7 @@ function reset() {
 		localStorage.removeItem('SETPOINT');
 		up = 0
 	}
+	init()
 }
 
 
