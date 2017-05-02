@@ -88,6 +88,14 @@ s.stop();
 window.addEventListener("devicelight", function (event) {
 	luminosity = event.value;
 	console.log(luminosity)
+	
+	//event.value is the lux value returned by the sensor on the device
+	if (event.value < 100) {
+		bodyBg.backgroundColor="#888";
+	} else {
+		bodyBg.backgroundColor="#fff";
+	}
+
 });
 
 
