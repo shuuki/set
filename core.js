@@ -4,6 +4,7 @@ console.log('ready')
 
 var up = 0,
 	time = 0,
+	del = 0,
 	running = false,
 	luminosity,
 	cache = {};
@@ -36,23 +37,24 @@ body.appendChild(pre);
 // steps
 
 function init() {
-	time = Date.now();
+	time = Date.now()
+	load()
 	if (!running) {
 		window.requestAnimationFrame(update)    
-		running = true;
-		playpause.innerHTML = 'Pause';
+		running = true
+		playpause.innerHTML = 'Pause'
 	} else {
 		window.cancelAnimationFrame(update)
-		running = false;
-		playpause.innerHTML = 'Resume';
+		running = false
+		playpause.innerHTML = 'Resume'
 	}
-	load()
 }
 
 function update() {
   if (running) window.requestAnimationFrame(update)
 	inputs()
 	tick()
+	//countdown()
 	render()
 	save()
 }
@@ -63,41 +65,52 @@ function inputs() {
 }
 
 function tick() {
-	var del = 0,
-    past = time;
+	let past = time
 
-	time = Date.now();
-	del = time - past;
-	up = up + del;
+	time = Date.now()
+	del = time - past
+	up = up + del
 }
 
 
-function clocks(time) {
-	var clock = {}
-	clock.ms = Math.floor(time % 1000)
-	clock.sec = Math.floor((time/1000)%60)
-	clock.min = Math.floor((time/(1000*60))%60)
-	clock.hr = Math.floor((time/(1000*60*60))%24)
-	clock.up = Math.floor(up/1000)
+
+function countdown() {
+	//let started = 0, 
+	//	goal = 10000
+	//	burn = up - started
+	//if (burn > goal) console.log('done')
+}
+
+
+function clocks(ms)
+{
+	let clock = {
+		ms: Math.floor(ms % 1000),
+		sec: Math.floor((ms / 1000) % 60),
+		min: Math.floor((ms / (1000 * 60)) % 60),
+		hr: Math.floor((ms / (1000 * 60 * 60)) % 24),
+		up: Math.floor(up/1000)		
+	}
 	return clock
 }
 
 
-function beats(time) {
-	var beat = []
-	beat[0] = ((Math.sin(time / 500)+1)/2)
-	beat[1] = ((Math.sin(time / 125)+1)/2)
-	beat[2] = ((Math.sin(time / 2000)+1)/2)
-	beat[3] = ((Math.sin(time / (24*60*60*1000))+1)/2)
+function beats(time)
+{
+	let beat = []
+	beat[0] = ((Math.sin(time / 500) + 1) / 2)
+	beat[1] = ((Math.sin(time / 125) + 1) / 2)
+	beat[2] = ((Math.sin(time / 2000) + 1) / 2)
+	beat[3] = ((Math.sin(time / (24 * 60 * 60 * 1000)) + 1) / 2)
 	// more http://www.sengpielaudio.com/calculator-bpmtempotime.htm
 	return beat
 }
 
 
-function render() {
-
-	var c = clocks(up);
-	var b = beats(up);
+function render()
+{
+	let c = clocks(up)
+	let b = beats(up)
 
 	
 	div.innerHTML = 
@@ -131,32 +144,30 @@ var screen = [];
 
 
 function display(n) {
-		
 	screen.push(linegen(n))
 
-	if (screen.length > 64) screen = screen.splice(1,64)
-	
+	if (screen.length > 64) screen.shift()
+
 	return screen.join('')
 }
 
 
 function linegen(bar) {
-  
 	
-	var px = [];
+	let px = [],
+		width = 40
 	
-	bar.forEach(function(n) { px[Math.floor(n*40)] = true })
+	bar.forEach(function(n) { px[Math.floor(n * width)] = true })
 	  
   var foo = []
-  for (var x = 0; x < 41; x++) {
+  for (var x = 0; x < width + 1; x++) {
     if (px[x])
-      foo.push('█')//
+      foo.push('█')
     else
       foo.push(' ')
-		if (x === 40)
+		if (x === width)
 			foo.push('\n')
   }
-  //for (var y = 0; y < 25; y++){for (var x = 0; x < 40; x++){foo.push('*')}foo.push('\n')}
   return foo.join('')
 }
 
@@ -167,8 +178,8 @@ function linegen(bar) {
 // save+load using localStorage
 
 function save() {
-	cache = { time: up };
-	window.localStorage.setItem('SETPOINT', JSON.stringify(cache));
+	cache = {time: up}
+	window.localStorage.setItem('SETPOINT', JSON.stringify(cache))
 }
 
 function load() {
@@ -191,15 +202,6 @@ function reset() {
 // changes mode ambient light sensor
 // only works on firefox
 
-/*
-
-var s = new AmbientLightSensor();
-s.start();
-s.onchange = event => alert(event.reading.illuminance); 
-s.stop();
-
-*/
-
 window.addEventListener('devicelight', function (event) {
 	luminosity = event.value;
 	console.log(luminosity)
@@ -215,6 +217,38 @@ window.addEventListener('devicelight', function (event) {
 });
 
 
+
+// Burner countdown widget???? 
+
+const Burner = {
+	active: false,
+	init: function(goal, start) {
+		this.goal = goal
+		this.start = start
+		this.burn = 0
+		this.active = true
+		return this
+	},
+	update: function(now)  {
+		if (this.active) {
+			this.burn = now - this.start
+			if (this.burn >= this.goal) {
+				this.active = false
+			}
+		}
+	},
+	render: function()  {
+		if (!this.active) {
+			console.log('done')
+		} else {
+			console.log(this.burn)
+		}
+	}
+}
+
+//var foo = Object.create(Burner)
+//foo.init(1200,0)
+//foo
 
 
 
