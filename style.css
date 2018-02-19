@@ -17,8 +17,17 @@ p {
 pre {
   font-size: 8px;
   line-height: 6px;
-
   font-family: monospace;
+}
+
+button,
+div {
+  margin: 1em;
+}
+
+div {
+  font-family: "Ubuntu Mono", "Monaco", monospace;
+  font-size: 1.2em;
 }
 
 /*
