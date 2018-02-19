@@ -16,7 +16,8 @@ g.time = 0 // system time
 g.up = 0 // sim uptime
 g.delay = 0 // time sim last ran
 g.delta = 0 // frame delta time
-
+g.cache = {}
+g.log = []
 
 
 // scenes 
@@ -46,15 +47,17 @@ z.init = () => {
 	z.load()
 
 	g.up = g.cache.up
-	g.delay = g.cache.time
+	g.delay = g.cache .time
 	// if it's paused this shouldn't happen
 	// so when you go away you get delay updates
 	// but on pause it should freeze the delay
 	g.delay = g.time - g.delay
 	g.up = g.up + g.delay
 
+	g.log.splice( 0, 0, 'delay ' + ( g.delay / 1000 ) + ' sec' )
+
 	if ( !g.running ) {
-		window.requestAnimationFrame( z.update )    
+		window.requestAnimationFrame( z.update )
 		g.running = true
 	} else {
 		window.cancelAnimationFrame( z.update )
@@ -92,7 +95,8 @@ z.render = () => {
 z.save = () => {
 	let cache = {
 		up: g.up,
-		time: g.time
+		time: g.time,
+		log: g.log
 	}
 	let save = JSON.stringify( cache )
 	window.localStorage.setItem( 'SETOUT', save )
@@ -102,6 +106,7 @@ z.load = () => {
 	if ( localStorage.getItem( 'SETOUT' ) ) {
 		let load = localStorage.getItem( 'SETOUT' )
 		let cache = JSON.parse( load )
+		g.log = cache.log
 		g.cache = cache
 	}
 }
@@ -109,6 +114,7 @@ z.load = () => {
 z.reset = () => {
 	if ( localStorage.getItem( 'SETOUT' ) ) {
 		localStorage.removeItem( 'SETOUT' )
+		g.log = []
 		g.up = 0
 	}
 }
@@ -137,6 +143,8 @@ s.draw[0] = () => {
 		+ pad(c.sec, 2) + ' : '
 		+ pad(c.ms, 3)
 		+ '</p>';
+	
+	logger.innerHTML = g.log.join( '\n' )
 }
 
 
@@ -162,6 +170,8 @@ body.appendChild( forget );
 var div = document.createElement( 'div' );
 body.appendChild( div );
 
+var logger = document.createElement( 'pre' )
+body.appendChild( logger )
 
 
 // utilities
