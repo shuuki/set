@@ -46,6 +46,8 @@ z.init = () => {
 
 	z.load()
 
+	// split this into a separate function
+	// vvvvvvvvvvvvvv
 	g.up = g.cache.up
 	g.delay = g.cache .time
 	// if it's paused this shouldn't happen
@@ -54,7 +56,17 @@ z.init = () => {
 	g.delay = g.time - g.delay
 	g.up = g.up + g.delay
 
-	g.log.splice( 0, 0, 'delay ' + ( g.delay / 1000 ) + ' sec' )
+	// update logging
+	let templog = 'delay ' + ( g.delay / 1000 ) + ' sec';
+	// add log to end of array 
+	g.log.push( templog )
+	// or add to start of array
+	//g.log.splice( 0, 0, templog )
+	if ( g.log.length > 12 ) {
+		g.log.shift()
+	}
+	// ^^^^^^^^^^^^^^
+
 
 	if ( !g.running ) {
 		window.requestAnimationFrame( z.update )
